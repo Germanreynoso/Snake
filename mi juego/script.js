@@ -198,7 +198,7 @@ const changeDirection = (e) => {
 const endGame = () => {
     console.log('Finalizando Juego');
     clearInterval(gameInterval);
-    alert(`¡Game Over! Tu puntuación: ${score}`);
+    alert(`¡Juego Terminado! Tu puntuación: ${score}`);
 
     // Mostrar el botón de reinicio
     restartButton.style.display = "block";
