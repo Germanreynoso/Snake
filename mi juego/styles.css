@@ -1,0 +1,101 @@
+/* Resetear márgenes y paddings por defecto */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* Estilo del cuerpo de la página */
+body {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
+    background-color: #f0f0f0;
+    position: relative;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo para el contador de puntuación */
+.score {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 24px;
+    z-index: 1;
+    color: #333;
+}
+
+/* Estilo para el botón de reinicio */
+#restart-button {
+    position: absolute;
+    top: 60px;
+    left: 20px;
+    padding: 20px 20px;
+    font-size: 26px;
+    cursor: pointer;
+    display: none; /* Inicialmente oculto */
+    color: #030000;
+    border: none;
+    border-radius: 5px;
+}
+
+
+
+/* Estilo para el tablero de juego */
+.play-board {
+    display: grid;
+    grid-template-columns: repeat(30, 20px);
+    grid-template-rows: repeat(30, 20px);
+    gap: 2px;
+    background-color: #000; /* Fondo negro para mejor contraste */
+    width: fit-content;
+    height: fit-content;
+    outline: none; /* Eliminar el borde de foco */
+    /* Opcional: agregar una sombra para destacar el tablero */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 2px solid #fff; /* Borde visible para depuración */
+}
+
+/* Estilo para las celdas de la serpiente */
+.cell {
+    width: 20px;
+    height: 20px;
+    background-color: #00ff00; /* Verde para la serpiente */
+    border-radius: 4px;
+}
+
+/* Estilo para la comida */
+.food {
+    background-color: #ff0000; /* Rojo para la comida */
+    border-radius: 50%;
+}
+
+/* Estilo para el foco visible */
+.play-board:focus {
+    outline: 2px solid #00f;
+}
+.controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.horizontal-controls {
+    display: flex;
+    justify-content: center;
+}
+
+button {
+    width: 50px;
+    height: 50px;
+    font-size: 24px;
+    margin: 5px;
+    border: none;
+   /* Color del botón */
+    color: white; /* Color del texto */
+    border-radius: 5px; /* Bordes redondeados */
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
