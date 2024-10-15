@@ -7,25 +7,20 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <!-- Contenedor para la puntuación -->
     <div class="score">Puntuación: <span id="score">0</span></div>
-    
-    <!-- Tablero de juego -->
+    <button id="restart-button">Reiniciar</button>
+
     <div class="play-board" tabindex="0"></div>
-    
-    <!-- Botón para reiniciar el juego -->
-    <button id="restart-button">Reiniciar Juego</button>
+
     <div class="controls">
-        <button id="up">↑</button>
+        <button id="up">▲</button>
         <div class="horizontal-controls">
-            <button id="left">←</button>
-            <button id="right">→</button>
+            <button id="left">◀</button>
+            <button id="down">▼</button>
+            <button id="right">▶</button>
         </div>
-        <button id="down">↓</button>
     </div>
-    
-    
-    
-    <script src="script.js"></script>
+
+    <script src="app.js"></script>
 </body>
 </html>

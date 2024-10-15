@@ -11,29 +11,17 @@ const downButton = document.getElementById("down");
 const leftButton = document.getElementById("left");
 const rightButton = document.getElementById("right");
 
-if (!playBoard) {
-    console.error('No se encontró el elemento .play-board');
-}
-
-if (!scoreElement) {
-    console.error('No se encontró el elemento #score');
-}
-
-if (!restartButton) {
-    console.error('No se encontró el botón #restart-button');
-}
-
 // Configuración inicial del juego
 let snake = [{ x: 5, y: 5 }];
 let velocityX = 1;
 let velocityY = 0;
 let food = { x: 10, y: 10 };
 let score = 0;
-const boardSize = 30; // Tamaño del tablero (30x30)
+const boardSize = 30;
 let gameInterval = null;
-let gameSpeed = 125; // Velocidad inicial en ms
-const speedIncrement = 5; // Cantidad de ms para disminuir el intervalo
-const minSpeed = 50; // Velocidad mínima en ms
+let gameSpeed = 125;
+const speedIncrement = 5;
+const minSpeed = 50;
 
 // Función para cambiar la velocidad del juego
 const changeGameSpeed = (newSpeed) => {
@@ -45,36 +33,25 @@ const changeGameSpeed = (newSpeed) => {
 
 // Función para iniciar o reiniciar el juego
 const startGame = () => {
-    console.log('Iniciando Juego');
-    // Resetear variables
     snake = [{ x: 5, y: 5 }];
     velocityX = 1;
     velocityY = 0;
     score = 0;
-    gameSpeed = 50; // Reiniciar la velocidad inicial
+    gameSpeed = 125; // Reiniciar la velocidad inicial
     scoreElement.textContent = score;
     generateFood();
     playBoard.focus();
 
-    // Limpiar el tablero
     playBoard.innerHTML = "";
     drawBoard();
 
-    // Limpiar el intervalo si ya existe
-    if (gameInterval) {
-        clearInterval(gameInterval);
-    }
-
-    // Iniciar el bucle del juego con la velocidad actual
+    if (gameInterval) clearInterval(gameInterval);
     gameInterval = setInterval(initGame, gameSpeed);
-
-    // Ocultar el botón de reinicio si está visible
     restartButton.style.display = "none";
 };
 
 // Función principal del juego
 const initGame = () => {
-    console.log('Actualizando Juego');
     updateSnakePosition();
     drawBoard();
 };
@@ -82,58 +59,32 @@ const initGame = () => {
 // Actualizar la posición de la serpiente
 const updateSnakePosition = () => {
     const head = { x: snake[0].x + velocityX, y: snake[0].y + velocityY };
-    console.log(`Nueva Cabeza: (${head.x}, ${head.y})`);
 
-    // Detectar colisión con paredes
-    if (head.x < 1 || head.x > boardSize || head.y < 1 || head.y > boardSize) {
-        console.log('Colisión con pared detectada');
+    if (head.x < 1 || head.x > boardSize || head.y < 1 || head.y > boardSize || isCollision(head, snake)) {
         endGame();
         return;
     }
 
-    // Detectar colisión consigo misma
-    if (isCollision(head, snake)) {
-        console.log('Colisión con la serpiente detectada');
-        endGame();
-        return;
-    }
-
-    // Añadir la nueva cabeza a la serpiente
     snake.unshift(head);
-    console.log(`Serpiente actual: ${JSON.stringify(snake)}`);
 
-    // Verificar si la serpiente ha comido la comida
     if (head.x === food.x && head.y === food.y) {
-        console.log('Comida Comida');
-        // Incrementar la puntuación
         score += 10;
         scoreElement.textContent = score;
         generateFood();
-
-        // Aumentar la velocidad: disminuir el intervalo
-        if (gameSpeed > minSpeed) { // Asegurarse de no exceder la velocidad mínima
-            changeGameSpeed(gameSpeed - speedIncrement); // Decrementa el intervalo en 'speedIncrement' ms
-        }
+        if (gameSpeed > minSpeed) changeGameSpeed(gameSpeed - speedIncrement);
     } else {
-        // Remover la última parte de la serpiente si no ha comido
         snake.pop();
     }
 };
 
-// Dibujar el tablero, la serpiente y la comida
+// Dibujar el tablero
 const drawBoard = () => {
     playBoard.innerHTML = "";
-
-    // Dibujar la serpiente
     snake.forEach(segment => drawCell(segment.x, segment.y, "cell"));
-
-    // Dibujar la comida
     drawCell(food.x, food.y, "food");
 };
 
-// Función para dibujar una celda específica
 const drawCell = (x, y, className) => {
-    console.log(`Dibujando celda en (${x}, ${y}) con clase ${className}`);
     const cell = document.createElement("div");
     cell.className = className;
     cell.style.gridColumn = x;
@@ -141,31 +92,22 @@ const drawCell = (x, y, className) => {
     playBoard.appendChild(cell);
 };
 
-// Generar una nueva posición para la comida
+// Generar comida aleatoria
 const generateFood = () => {
-    const newFood = {
+    food = {
         x: Math.floor(Math.random() * boardSize) + 1,
         y: Math.floor(Math.random() * boardSize) + 1
     };
-    console.log(`Generando comida en (${newFood.x}, ${newFood.y})`);
-
-    // Asegurarse de que la nueva comida no esté sobre la serpiente
-    if (isCollision(newFood, snake)) {
-        console.log('Colisión detectada al generar comida, generando nuevamente');
-        generateFood(); // Generar nuevamente si hay colisión
-    } else {
-        food = newFood;
-    }
+    if (isCollision(food, snake)) generateFood();
 };
 
-// Verificar si hay una colisión entre una posición y una lista de obstáculos
+// Detectar colisiones
 const isCollision = (position, obstacles) => {
     return obstacles.some(obstacle => obstacle.x === position.x && obstacle.y === position.y);
 };
 
-// Cambiar la dirección de la serpiente según la tecla presionada
+// Cambiar dirección
 const changeDirection = (e) => {
-    console.log(`Tecla Presionada: ${e.key}`);
     switch (e.key) {
         case "ArrowUp":
             if (velocityY !== 1) {
@@ -194,23 +136,17 @@ const changeDirection = (e) => {
     }
 };
 
-// Finalizar el juego
+// Finalizar juego
 const endGame = () => {
-    console.log('Finalizando Juego');
     clearInterval(gameInterval);
     alert(`¡Juego Terminado! Tu puntuación: ${score}`);
-
-    // Mostrar el botón de reinicio
     restartButton.style.display = "block";
 };
 
-// Reiniciar el juego cuando se haga clic en el botón de reinicio
 restartButton.addEventListener("click", startGame);
-
-// Asignar el evento de teclado al tablero de juego
 playBoard.addEventListener("keydown", changeDirection);
 
-// Botones de control para dispositivos móviles
+// Controles móviles
 upButton.addEventListener("click", () => {
     if (velocityY !== 1) {
         velocityX = 0;
@@ -239,5 +175,4 @@ rightButton.addEventListener("click", () => {
     }
 });
 
-// Iniciar el juego por primera vez
 startGame();
